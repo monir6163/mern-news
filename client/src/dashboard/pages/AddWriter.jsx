@@ -23,6 +23,7 @@ export const AddWriter = () => {
               <input
                 type="text"
                 id="name"
+                name="name"
                 placeholder="Write Name"
                 className="px-3 py-2 rounded-md outline-0 border border-gray-300 focus:border-green-500 h-10"
               />
@@ -50,6 +51,7 @@ export const AddWriter = () => {
               <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="Write Email"
                 className="px-3 py-2 rounded-md outline-0 border border-gray-300 focus:border-green-500 h-10"
               />
@@ -61,6 +63,7 @@ export const AddWriter = () => {
               <input
                 type="password"
                 id="password"
+                name="password"
                 placeholder="Write Password"
                 className="px-3 py-2 rounded-md outline-0 border border-gray-300 focus:border-green-500 h-10"
               />

@@ -8,7 +8,7 @@ const News = () => {
           <span className="text-blue-500">News</span> Feed
         </h2>
         <Link
-          to="/dashboard/news/create"
+          to="/dashboard/create/news"
           className="text-white px-3 py-[6px] bg-purple-500 hover:bg-purple-600 rounded-md transition duration-200"
         >
           Create News
