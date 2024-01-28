@@ -1,5 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 // import "./App.css";
+import { useContext } from "react";
+import StoreContext from "./context/storeContext";
 import MainLayout from "./dashboard/layout/MainLayout";
 import { AddWriter } from "./dashboard/pages/AddWriter";
 import AdminIndex from "./dashboard/pages/AdminIndex";
@@ -14,9 +16,8 @@ import ProtectDashboard from "./middleware/ProtectDashboard";
 import ProtectRole from "./middleware/ProtectRole";
 
 function App() {
-  let userInfo = {
-    role: "writer",
-  };
+  const { state } = useContext(StoreContext);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -26,10 +27,10 @@ function App() {
             <Route
               path=""
               element={
-                userInfo.role === "writer" ? (
-                  <Navigate to="/dashboard/writer" />
-                ) : (
+                state.userInfo?.role === "admin" ? (
                   <Navigate to="/dashboard/admin" />
+                ) : (
+                  <Navigate to="/dashboard/writer" />
                 )
               }
             />

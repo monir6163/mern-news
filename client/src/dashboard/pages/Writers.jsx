@@ -1,6 +1,27 @@
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { baseUrl } from "../../config/config";
+import StoreContext from "../../context/storeContext";
 export const Writers = () => {
+  const { state } = useContext(StoreContext);
+  const [writers, setWriters] = useState([]);
+  const get_all_writers = async () => {
+    try {
+      const { data } = await axios.get(`${baseUrl}/api/news/get/writers`, {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      });
+      setWriters(data?.writers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    get_all_writers();
+  }, []);
   return (
     <div className="bg-white rounded-md">
       <div className="flex justify-between p-4">
@@ -8,7 +29,7 @@ export const Writers = () => {
           <span className="text-blue-500">All</span> Writers
         </h2>
         <Link
-          to="/dashboard/news/create"
+          to="/dashboard/addwriter"
           className="text-white px-3 py-[6px] bg-purple-500 hover:bg-purple-600 rounded-md transition duration-200"
         >
           Add Writers
@@ -28,10 +49,10 @@ export const Writers = () => {
             </tr>
           </thead>
           <tbody>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, index) => (
+            {writers?.map((item, index) => (
               <tr className="bg-white border-b" key={index}>
                 <td className="px-6 py-4">{index + 1}</td>
-                <td className="px-6 py-4">Monir</td>
+                <td className="px-6 py-4">{item["name"]}</td>
                 <td className="px-6 py-4">
                   <img
                     className="w-10 h-10 rounded-full"
@@ -39,12 +60,15 @@ export const Writers = () => {
                     alt=""
                   />
                 </td>
-                <td className="px-6 py-4">Travel</td>
-                <td className="px-6 py-4">monir@gmail.com</td>
-                <td className="px-6 py-4">Writer</td>
+                <td className="px-6 py-4">{item["category"]}</td>
+                <td className="px-6 py-4">{item["email"]}</td>
+                <td className="px-6 py-4">{item["role"]}</td>
                 <td className="px-6 py-4">
                   <div className="flex gap-x-3 justify-start items-center text-white">
-                    <Link className="bg-green-500 p-[6px] rounded hover:shadow-lg hover:bg-green-500/50">
+                    <Link
+                      to={`/dashboard/writer/${item["_id"]}`}
+                      className="bg-green-500 p-[6px] rounded hover:shadow-lg hover:bg-green-500/50"
+                    >
                       <FaEye />
                     </Link>
                   </div>

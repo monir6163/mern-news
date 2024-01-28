@@ -1,7 +1,12 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../config/config";
+import StoreContext from "../../context/storeContext";
 const Login = () => {
+  const navigate = useNavigate();
+  const { dispatch } = useContext(StoreContext);
   const [loader, setLoader] = useState(false);
   const [state, setState] = useState({
     email: "",
@@ -17,10 +22,19 @@ const Login = () => {
     setLoader(true);
     try {
       const { data } = await axios.post(`${baseUrl}/api/login`, state);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
       setLoader(false);
+      localStorage.setItem("newsToken", data.token);
+      dispatch({
+        type: "login_success",
+        payload: {
+          token: data.token,
+        },
+      });
+      toast.success(data.message);
+      navigate("/dashboard");
+    } catch (error) {
+      setLoader(false);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -66,9 +80,10 @@ const Login = () => {
             <div className="mt-5">
               <button
                 type="submit"
+                disabled={loader}
                 className="w-full bg-slate-500 text-white py-2 rounded-md hover:bg-slate-700 transition duration-200 ease-in-out"
               >
-                Login
+                {loader ? "Loading..." : "Login"}
               </button>
             </div>
           </form>

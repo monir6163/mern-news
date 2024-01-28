@@ -1,15 +1,14 @@
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import StoreContext from "../context/storeContext";
 
 const ProtectDashboard = () => {
-  const userInfo = {
-    name: "Monir",
-    role: "admin",
-  };
+  const { state } = useContext(StoreContext);
 
-  if (!userInfo) {
-    return <Navigate to="/login" />;
-  } else {
+  if (state.userInfo) {
     return <Outlet />;
+  } else {
+    return <Navigate to="/login" />;
   }
 };
 
